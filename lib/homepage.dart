@@ -56,9 +56,8 @@ class _MyHomePageState extends State<MyHomePage> {
               SliverPersistentHeader(
                 delegate: _SliverAppBarDelegate(
                   TabBar(
-                    
-                    indicatorColor: Colors.grey,
-                    labelColor: Colors.blue,
+                    indicatorColor: Colors.white54,
+                    labelColor: Colors.white,
                     unselectedLabelColor: Colors.grey,
                     tabs: [
                       Tab(icon: Icon(Icons.info), text: "LOCAL"),
@@ -71,7 +70,22 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ];
           },
-          body: Center(),
+          body: Flex(
+            direction: Axis.vertical,
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  color: Colors.black87,
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Post();
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -92,6 +106,8 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return new Container(
+      color: Colors.black87,
+      margin: EdgeInsets.all(0),
       child: _tabBar,
     );
   }
