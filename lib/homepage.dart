@@ -26,45 +26,78 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black87,
-        centerTitle: true,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-        leading: Row(
-          children: <Widget>[
-            Text(
-              'Address',
-              style: TextStyle(
-                color: Colors.white,
+      body: DefaultTabController(
+        length: 2,
+        child: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                expandedHeight: 150,
+                floating: true,
+                pinned: false,
+                snap: true,
+                backgroundColor: Colors.black,
+                iconTheme: IconThemeData(
+                  color: Colors.white,
+                  size: 20.0
+                ),
+                flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  title: Text('Behtar Bharat',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 20.0
+                    ),
+                  ),
+                  /*background: Image.network("https://images.app.goo.gl/9U7UqoWgvkqAV8hA8",
+                  ),*/
+                ),
               ),
-            ),
-            Icon(Icons.arrow_drop_down),
-          ],
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: (){},
-          ),
-          IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: (){},
-          ),
-        ],
-      ),
-      body: Center(
-        child: Container(
-          color: Colors.black87,
-          child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemBuilder: (BuildContext context, int index) {
-            return Post();
+              SliverPersistentHeader(
+                delegate: _SliverAppBarDelegate(
+                  TabBar(
+                    
+                    indicatorColor: Colors.grey,
+                    labelColor: Colors.blue,
+                    unselectedLabelColor: Colors.grey,
+                    tabs: [
+                      Tab(icon: Icon(Icons.info), text: "LOCAL"),
+                      Tab(icon: Icon(Icons.cloud_circle), text: "NATIONAL"),
+                    ],
+                  ),
+                ),
+                pinned: true,
+                //floating: true,
+              ),
+            ];
           },
-          ),
+          body: Center(),
         ),
       ),
     );
+  }
+}
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate(this._tabBar);
+
+  final TabBar _tabBar;
+
+  @override
+  double get minExtent => _tabBar.preferredSize.height;
+  @override
+  double get maxExtent => _tabBar.preferredSize.height;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return new Container(
+      child: _tabBar,
+    );
+  }
+
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return false;
   }
 }
