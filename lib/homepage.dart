@@ -1,20 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'post.dart';
+import 'local_national.dart';
 
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -25,17 +15,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
   int _selectedIndex = 0;
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
+  final List<Widget> _widgetOptions = <Widget>[
+    LocalNational(),
     Text(
-      'Index 0: Home',
+      'Index 1: Search',
       style: optionStyle,
     ),
     Text(
-      'Index 1: Business',
+      'Index 2: Add new post',
       style: optionStyle,
     ),
     Text(
-      'Index 2: School',
+      'Index 2: Notifications',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 2: Profile',
       style: optionStyle,
     ),
   ];
@@ -50,122 +45,50 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: DefaultTabController(
-        length: 2,
-        child: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              SliverAppBar(
-                expandedHeight: 150,
-                floating: true,
-                pinned: false,
-                snap: true,
-                backgroundColor: Colors.black,
-                iconTheme: IconThemeData(
-                  color: Colors.white,
-                  size: 20.0
-                ),
-                flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: true,
-                  title: Text('Behtar Bharat',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 20.0
-                    ),
-                  ),
-                  /*background: Image.network("https://images.app.goo.gl/9U7UqoWgvkqAV8hA8",
-                  ),*/
-                ),
-              ),
-              SliverPersistentHeader(
-                delegate: _SliverAppBarDelegate(
-                  TabBar(
-                    indicatorColor: Colors.white54,
-                    labelColor: Colors.white,
-                    unselectedLabelColor: Colors.grey,
-                    tabs: [
-                      Tab(icon: Icon(Icons.info), text: "LOCAL"),
-                      Tab(icon: Icon(Icons.cloud_circle), text: "NATIONAL"),
-                    ],
-                  ),
-                ),
-                pinned: true,
-                //floating: true,
-              ),
-            ];
-          },
-          body: Flex(
-            direction: Axis.vertical,
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                  color: Colors.black87,
-                  child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Post();
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
+      body: _widgetOptions[_selectedIndex],
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          // sets the background color of the `BottomNavigationBar`
+          canvasColor: Colors.black54,
+          // sets the active color of the `BottomNavigationBar` if `Brightness` is light
+          //primaryColor: Colors.white60,
+          /*textTheme: Theme
+            .of(context)
+            .textTheme
+            .copyWith(caption: new TextStyle(color: Colors.white70)) // sets the inactive color of the `BottomNavigationBar`,*/
+        ),
+        child: BottomNavigationBar(
+          //backgroundColor: Colors.white10,
+          items: const <BottomNavigationBarItem> [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              title: Text('Home'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              title: Text('Search'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add_a_photo),
+              title: Text('New Post'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications),
+              title: Text('Notifications'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outline),
+              title: Text('Profile'),
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          type: BottomNavigationBarType.shifting ,
+          selectedItemColor: Colors.white70,
+          unselectedItemColor: Colors.black87,
+          //fixedColor: Colors.black,
+          onTap: _onItemTapped,
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white10,
-        items: const <BottomNavigationBarItem> [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            title: Text('Search'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_a_photo),
-            title: Text('New Post'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            title: Text('Notifications'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            title: Text('Profile'),
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
-        onTap: _onItemTapped,
-      ),
     );
-  }
-}
-
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this._tabBar);
-
-  final TabBar _tabBar;
-
-  @override
-  double get minExtent => _tabBar.preferredSize.height;
-  @override
-  double get maxExtent => _tabBar.preferredSize.height;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return new Container(
-      color: Colors.black87,
-      margin: EdgeInsets.all(0),
-      child: _tabBar,
-    );
-  }
-
-  @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return false;
   }
 }
