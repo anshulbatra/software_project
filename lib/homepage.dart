@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'local_national.dart';
+import 'search_page.dart';
+import 'search_popular.dart';
 
 
 class MyHomePage extends StatefulWidget {
@@ -17,18 +19,12 @@ class _MyHomePageState extends State<MyHomePage> {
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   final List<Widget> _widgetOptions = <Widget>[
     LocalNational(),
-    Text(
-      'Index 1: Search',
-      style: optionStyle,
-    ),
+    SearchPage(),
     Text(
       'Index 2: Add new post',
       style: optionStyle,
     ),
-    Text(
-      'Index 2: Notifications',
-      style: optionStyle,
-    ),
+    SearchPopularScreen(),
     Text(
       'Index 2: Profile',
       style: optionStyle,
