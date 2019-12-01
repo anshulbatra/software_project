@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'homepage.dart';
-import 'login_register.dart';
+import 'mapping.dart';
+import 'authentication.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: LoginRegisterPage(), //MyHomePage(title: 'Behtar Bharat'),
+      home: MappingPage(auth: Auth(),), //MyHomePage(title: 'Behtar Bharat'),
     );
   }
 }
