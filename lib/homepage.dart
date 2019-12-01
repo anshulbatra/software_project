@@ -1,19 +1,37 @@
 import 'package:flutter/material.dart';
 
+import 'authentication.dart';
 import 'local_national.dart';
 import 'search_page.dart';
 import 'search_popular.dart';
 
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
+  MyHomePage({
+    this.auth,
+    this.onSignedOut,
+  });
+
+  final AuthImplementation auth;
+  final VoidCallback onSignedOut;
+
+  //final String title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  void _logoutUser() async {
+    try {
+      await widget.auth.signOut();
+      widget.onSignedOut();
+    }
+    catch(e) {
+      print(e.toString());
+    }
+  }
 
   int _selectedIndex = 0;
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
