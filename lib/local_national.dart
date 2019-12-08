@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'auth_provider.dart';
+import 'authentication.dart';
 import 'post.dart';
 
 class LocalNational extends StatefulWidget {
@@ -18,6 +20,20 @@ class _LocalNationalState extends State<LocalNational> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.undo),
+                    onPressed: () async {
+                      try {
+                        AuthService auth = Provider.of(context).auth;
+                        await auth.signOut();
+                        print("Signed Out!");
+                      } catch (e) {
+                        print (e);
+                      }
+                    },
+                  ),
+                ],
                 title: Row(
                     children: <Widget>[
                       Icon(Icons.location_on, color: Colors.white,),

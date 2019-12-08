@@ -1,36 +1,37 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 
-abstract class AuthImplementation {
-  Future<String> signIn(String email, String password);
-  Future<String> createUser(String email, String password);
-  Future<String> getCurrentUser();
-  Future<void> signOut();
-}
+class AuthService
+{
+  final FirebaseAuth _firebaseAuth= FirebaseAuth.instance;
+  Stream<String> get onAuthStateChanged=> _firebaseAuth.onAuthStateChanged.map(
+    (FirebaseUser user) => user?.uid,
+  );
 
-class Auth implements AuthImplementation {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  //sign up 
+  Future<String> createUserWithEmailAndPassword(String _email,String _password,String _name,String _aadhar,String _dob,String _contact) async
+  {
+    final currentUser= await _firebaseAuth.createUserWithEmailAndPassword(
+      email: _email,password: _password
+    );
 
-  
-  Future<String> signIn(String email, String password) async {
-    final FirebaseUser user = (await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password)).user;
-    return user.uid;
-  }
-
-  
-  Future<String> createUser(String email, String password) async {
-    final FirebaseUser user = (await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password)).user;
-    return user.uid;
-  }
-
-  
-  Future<String> getCurrentUser() async {
-    final FirebaseUser user = await _firebaseAuth.currentUser();
-    return user.uid;
-  }
-
-  Future<void> signOut() async {
-    _firebaseAuth.signOut();
+  //update name
+    var userUpdateInfo= UserUpdateInfo();
+    userUpdateInfo.displayName = _name;
+    await currentUser.updateProfile(userUpdateInfo);
+    await currentUser.reload();
+    return currentUser.uid;
   } 
+
+//sign in
+Future<String> signInWithEmailAndPassword(String _email,String _password) async
+{
+  return (await _firebaseAuth.signInWithEmailAndPassword(
+            email: _email, password: _password)).uid;
+}
+//signout
+ signOut() {
+    return _firebaseAuth.signOut();
+  }
 
 }
